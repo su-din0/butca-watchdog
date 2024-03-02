@@ -38,8 +38,8 @@ detections = [
     }
 ]
 
-log_file = "fast.log"
-flags_path = "flags/"
+log_file = "/var/log/suricata/fast.log"
+flags_path = "/var/www/htmlflags/"
 last_checked_line = 0
 
 def check_for_detections():
@@ -52,9 +52,10 @@ def check_for_detections():
                     detection["message"] in lines[i] and 
                     (j == 0 or detections[j - 1]["isDetected"]) and 
                     (detection["lastDetection"] is None or (time.time() - detection["lastDetection"]) > 30)
-                ):                    detection["lastDetection"] = time.time()
-                detection["isDetected"] = True
-                create_flag(detection)
+                ):
+                    detection["lastDetection"] = time.time()
+                    detection["isDetected"] = True
+                    create_flag(detection)
         last_checked_line = len(lines)
 
 def create_flag(detection):
